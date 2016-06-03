@@ -1,15 +1,11 @@
-package project.pingpong.myapp;
-
-import java.util.ArrayList;
+package com.pingpong;
 
 import java.util.*;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
 import com.datastax.driver.core.Metadata;
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.*;
 
 public class PingPongClient {
 	private Cluster cluster;
@@ -38,19 +34,40 @@ public class PingPongClient {
 		return this.session;
 	}
 	
+	public void createSchema()
+	{
+		session.execute("CREATE KEYSPACE IF NOT EXISTS pingpong WITH replication " + "= {'class' : 'SimpleStrategy', 'replication_factor' : 3};");
+		session.execute(
+				"CREATE TABLE IF NOT EXISTS pingpong.players (" +					
+					"firstName text, " +
+					"lastName text, " +
+					"wins int, " +
+					"losses int," +
+					"pointsFor bigint, " +
+					"pointsAgainst bigint, " +
+					"PRIMARY KEY (firstName, lastName));");
+		/*session.execute(
+				"CREATE TABLE IF NOT EXISTS pingpong.matches (" +
+					"id int PRIMARY KEY," +
+						"player1 text," +
+						"player2 text" +
+						"player1Wins int" +
+						"player2Wins int);");		*/
+	}
+	
 	public void updatePlayerRecord(String firstName, String lastName, int pointsF, int pointsA, boolean win) 
 	{
 		ResultSet results = querySchema(firstName, lastName);
 		int wins = 0;
 		int losses = 0;
-		Double pointsFor = 0.0;
-		Double pointsAgainst = 0.0;
+		int pointsFor = 0;
+		int pointsAgainst = 0;
 		for (Row r : results)
 		{
 			wins = r.getInt("wins");
 			losses = r.getInt("losses");
-			pointsFor = r.getDouble("pointsFor");
-			pointsAgainst = r.getDouble("pointsAgainst");
+			pointsFor = r.getInt("pointsFor");
+			pointsAgainst = r.getInt("pointsAgainst");
 		}
 		
 		pointsFor += pointsF;
@@ -80,7 +97,7 @@ public class PingPongClient {
 	
 	public ResultSet querySchema()
 	{
-		ResultSet results = session.execute("SELECT * FROM pingpong.players;");
+		ResultSet results = session.execute("SELECT * FROM pingpoing.players;");
 		return results;
 	}
 	
@@ -95,69 +112,26 @@ public class PingPongClient {
 			play.setFirstName(r.getString("firstName"));
 			play.setLastName(r.getString("lastName"));
 			play.setWins(r.getInt("wins"));
-			play.setLosses(r.getInt("losses"));
-			play.setScoreFor(r.getDouble("pointsFor"));							
-			play.setScoreAgainst(r.getDouble("pointsAgainst"));
-			
+			play.setLoss(r.getInt("losses"));
+			play.setScoreFor(r.getInt("pointsFor"));
+			play.setScoreAgainst(r.getInt("pointsAgainst"));
 			p.add(play);
+			/*sb.append(r.getString("firstName") + " ");); =
+			sb.append(r.getString("lastName" + '\n'));
+			sb.append("Wins: " + r.getInt("wins") + '\n');
+			sb.append("Losses: " + r.getInt("losses") + '\n');
+			sb.append("Points For: " + r.getInt("pointsFor") + '\n');
+			sb.append("Points Against: " + r.getInt("pointsAgainst") + '\n');
+			sb.append("=======================================================\n");*/
 		}
 		PingPongPlayer[] ppp = new PingPongPlayer[p.size()];
 		return p.toArray(ppp);
 	}
 	
-	public PingPongPlayer getPlayer(String firstName, String lastName)
-	{
-		PingPongPlayer play = new PingPongPlayer();
-		ResultSet result = querySchema(firstName, lastName);
-		for(Row r : result)
-		{
-			play.setFirstName(r.getString("firstName"));
-			play.setLastName(r.getString("lastName"));
-			play.setWins(r.getInt("wins"));
-			play.setLosses(r.getInt("losses"));
-			play.setScoreFor(r.getDouble("pointsFor"));							
-			play.setScoreAgainst(r.getDouble("pointsAgainst"));			
-			break;
-		}
-		return play;
-	}
-	
-	public PingPongMatch getMatch(String player1, String player2)
-	{
-		PingPongMatch match = new PingPongMatch();
-		session.execute("SELECT * FROM pingpong.matches WHERE " +
-							"player1 = '" + player1 + "' AND player2 = '" +
-							"';");
-		//add more
-		
-		return match;
-	}
-	
-	public boolean createPlayer(String fN, String lN)
-	{
-		try
-		{
-			session.execute("INSERT INTO pingpong.players (firstName, lastName, wins, losses, pointsFor, pointsAgainst) VALUES ('" + fN + "', '" + lN + "', 0, 0, 0, 0);");
-		}
-		catch(Exception e)
-		{
-			return false;
-		}
-		return true;				
-	}
-	
-	public boolean recordMatch(String p1First, String p1Last, String p2First, String p2Last, int p1Score, int p2Score)
-	{
-		PingPongMatch
-		
-		
-		return true;
-	}
-	
-	public void deletePlayer(String firstName, String lastName)
+	public void deleteRow(String firstName, String lastName)
 	{		
 		session.execute(
 				"DELETE FROM pingpong.players WHERE " +
 				"firstName = " + firstName + "AND lastName = " + lastName + ";");
-	}	
+	}		
 }
