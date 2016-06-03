@@ -93,10 +93,9 @@ public class HomeController {
 				}
 			}
 		}
-		PingPongPlayer[] match = new PingPongPlayer[2];
-		match[0] = client.getPlayer(player1First, player1Last);
-		match[1] = client.getPlayer(player2First, player2Last);
-		model.addAttribute("Match", match);
+		client.recordMatch(player1First, player1Last, player2First, player2Last, sc1, sc2);
+		PingPongMatch ppm = client.getMatch((player1First + " " + player1Last), (player2First + " " + player2Last));
+		model.addAttribute("Match", ppm);
 		CloseClient();
 		return "record_match";
 	}

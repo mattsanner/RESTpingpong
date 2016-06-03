@@ -5,12 +5,11 @@
 	<title>Match Players</title>
 </head>
 <body>
-<c:forEach items="${Match}" var="element">
-	<h1>${element.firstName} ${element.lastName}</h1>
-	<p>Wins: ${element.wins}</p>
-	<p>Losses: ${element.losses }</p>
-	<p>Points For: ${element.scoreFor }</p>
-	<p>Points Against: ${element.scoreAgainst }</p>
-</c:forEach>
+<h1>${Match.player1 }</h1>
+<p>Overall Score: ${Match.p1Score } </p>
+<p>Overall Wins: ${Match.p1Wins } </p>
+<h1>${Match.player2}</h1>
+<p>Overall Score: ${Match.p2Score }</p>
+<p>Overall Wins: ${Match.p2Wins } </p>
 </body>
 </html>

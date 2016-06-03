@@ -1,0 +1,15 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<html>
+<head>
+	<title>Match Players</title>
+</head>
+<body>
+<h1>${Match.player1 }</h1>
+<p>Overall Score: ${Match.p1score } </p>
+<p>Overall Wins: ${Match.p1wins } </p>
+<h1>${Match.player2}</h1>
+<p>Overall Score: ${Match.p2score }</p>
+<p>Overall Wins: ${Match.p2wins } </p>
+</body>
+</html>
