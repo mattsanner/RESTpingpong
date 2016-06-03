@@ -148,7 +148,7 @@ public class PingPongClient {
 	
 	public boolean recordMatch(String p1First, String p1Last, String p2First, String p2Last, int p1Score, int p2Score)
 	{
-		PingPongMatch
+		//PingPongMatch
 		
 		
 		return true;
