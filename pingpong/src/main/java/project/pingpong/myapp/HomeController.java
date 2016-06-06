@@ -70,6 +70,7 @@ public class HomeController {
 		catch(Exception e)
 		{	
 			model.addAttribute("error", "Score could not be parsed");
+			CloseClient();
 			return "error";
 		}
 		
@@ -93,11 +94,35 @@ public class HomeController {
 				}
 			}
 		}
-		client.recordMatch(player1First, player1Last, player2First, player2Last, sc1, sc2);
-		PingPongMatch ppm = client.getMatch((player1First + " " + player1Last), (player2First + " " + player2Last));
-		model.addAttribute("Match", ppm);
-		CloseClient();
-		return "record_match";
+		int result = client.recordMatch(player1First, player1Last, player2First, player2Last, sc1, sc2);
+		if(result == -1)
+		{
+			model.addAttribute("error", "Player(s) in match do not exist, check spelling or create player before recording match.");
+			CloseClient();
+			return "error";
+		}
+		else if (result == -2)
+		{
+			model.addAttribute("error", "Error updating match records. Please check input values and try again.");
+			CloseClient();
+			return "error";
+		}
+		else
+		{
+			PingPongMatch ppm = client.getMatch((player1First + " " + player1Last), (player2First + " " + player2Last));
+			if(ppm != null)
+			{
+				model.addAttribute("Match", ppm);
+				CloseClient();
+				return "record_match";
+			}
+			else
+			{
+				model.addAttribute("error", "The match did not load correctly. Please check input values.");
+				CloseClient();
+				return "error";
+			}
+		}
 	}
 	
 	@RequestMapping("/show_records")
@@ -106,7 +131,7 @@ public class HomeController {
 		InitializeClient();
 		PingPongPlayer[] retVal = client.getPlayers();
 		CloseClient();
-		model.addAttribute("Players", retVal);
+		model.addAttribute("Players", retVal);		
 		return "show_records";
 	}
 	

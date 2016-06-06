@@ -100,7 +100,8 @@ public class PingPongClient {
 			play.setScoreAgainst(r.getDouble("pointsAgainst"));
 			
 			p.add(play);
-		}
+		}		
+		
 		PingPongPlayer[] ppp = new PingPongPlayer[p.size()];
 		return p.toArray(ppp);
 	}
@@ -126,24 +127,34 @@ public class PingPongClient {
 	{
 		PingPongMatch match = new PingPongMatch();
 		ResultSet rs = session.execute("SELECT * FROM pingpong.matches WHERE " +
-							"player1 = '" + player1 + "' AND player2 = '" +
+							"player1 = '" + player1 + "' AND player2 = '" + player2 +
 							"';");
 		if(rs.isExhausted())
 		{
-			String[] splitString = player1.split(" ");			
-			PingPongPlayer p = getPlayer(splitString[0], splitString[1]);
-			String[] splitString2 = player2.split(" ");
-			PingPongPlayer p2 = getPlayer(splitString2[0], splitString2[1]);
-			if(p.getWins() == -1 || p2.getWins() == -1)
+			//Swap players to check if the record has players switched
+			rs = session.execute("SELECT * FROM pingpong.matches WHERE " +
+					"player1 = '" + player2 + "' AND player2 = '" + player1 +
+					"';");
+			if(rs.isExhausted())
 			{
-				return null;
-			}
-			else
-			{
-				createMatch(player1, player2);
+				String[] splitString = player1.split(" ");			
+				PingPongPlayer p = getPlayer(splitString[0], splitString[1]);
+				String[] splitString2 = player2.split(" ");
+				PingPongPlayer p2 = getPlayer(splitString2[0], splitString2[1]);
+				if(p.getWins() == -1 || p2.getWins() == -1)
+				{
+					return null;
+				}
+				else
+				{
+					createMatch(player1, player2);
+					rs = session.execute("SELECT * FROM pingpong.matches WHERE " +
+							"player1 = '" + player1 + "' AND player2 = '" + player2 +
+							"';");
+				}
 			}
 		}
-		//add more
+		
 		for(Row r : rs)
 		{
 			match.setPlayer1(r.getString("player1"));
@@ -169,7 +180,7 @@ public class PingPongClient {
 		return true;				
 	}
 	
-	public boolean recordMatch(String p1First, String p1Last, String p2First, String p2Last, int p1Score, int p2Score)
+	public int recordMatch(String p1First, String p1Last, String p2First, String p2Last, int p1Score, int p2Score)
 	{
 		try
 		{
@@ -177,28 +188,48 @@ public class PingPongClient {
 		String p2 = p2First + " " + p2Last;
 		
 		PingPongMatch ppm = getMatch(p1, p2);
+		boolean flipped = false;
+				
 		
 		//Make sure match DB query was successful
 		if(ppm != null)
 		{
-			if(p1Score > p2Score)
+			flipped = ppm.getPlayer1().equals(p2);
+			if(p1Score > p2Score && !flipped)
 			{
 				ppm.setP1Wins(ppm.getP1Wins() + 1);
+				ppm.setP1Score(ppm.getP1Score() + p1Score);
+				ppm.setP2Score(ppm.getP2Score() + p2Score);
 			}
-			else if(p1Score < p2Score)
+			else if(p1Score < p2Score && !flipped)
 			{
 				ppm.setP2Wins(ppm.getP2Wins() + 1);
+				ppm.setP1Score(ppm.getP1Score() + p1Score);
+				ppm.setP2Score(ppm.getP2Score() + p2Score);
 			}
-			ppm.setP1Score(ppm.getP1Score() + p1Score);
-			ppm.setP2Score(ppm.getP2Score() + p2Score);
+			//If DB record has players flipped
+			else if(p1Score > p2Score && flipped)
+			{
+				ppm.setP2Wins(ppm.getP2Wins() + 1);
+				ppm.setP1Score(ppm.getP1Score() + p2Score);
+				ppm.setP2Score(ppm.getP2Score() + p1Score);
+			}
+			else if(p1Score < p2Score && flipped)
+			{
+				ppm.setP1Wins(ppm.getP1Wins() + 1);
+				ppm.setP1Score(ppm.getP1Score() + p2Score);
+				ppm.setP2Score(ppm.getP2Score() + p1Score);
+			}		
 		}
 		else
 		{
-			return false;
+			return -1;
 		}
 		
 		//Execute UPDATE
 		//Update in player vs player - pingpong.matches DB
+		if(!flipped)
+		{
 		String exString = ("UPDATE pingpong.matches " +
 						"SET p1score = " + ppm.getP1Score() + ", p2Score = " + ppm.getP2Score() +
 						", p1wins = " + ppm.getP1Wins() + ", p2wins = " + ppm.getP2Wins() +
@@ -207,13 +238,28 @@ public class PingPongClient {
 		exString = ("INSERT INTO pingpong.matchList " + 
 							"(time, p1score, p2score, player1, player2) " +
 							"VALUES (toTimestamp(now()), " + p1Score + ", " + p2Score + ", '" +
-							p1 + "', '" + p2 +"');");			
+							p1 + "', '" + p2 +"');");	
+		session.execute(exString);
+		}
+		else
+		{
+			String exString = ("UPDATE pingpong.matches " +
+					"SET p1score = " + ppm.getP1Score() + ", p2Score = " + ppm.getP2Score() +
+					", p1wins = " + ppm.getP1Wins() + ", p2wins = " + ppm.getP2Wins() +
+					" WHERE player1 = '" + p2 + "' AND player2 = '" + p1 + "';");
+			session.execute(exString);
+			exString = ("INSERT INTO pingpong.matchList " + 
+						"(time, p1score, p2score, player1, player2) " +
+						"VALUES (toTimestamp(now()), " + p2Score + ", " + p1Score + ", '" +
+						p2 + "', '" + p1 +"');");	
+			session.execute(exString);
+		}
 		}	
 		catch(Exception e)
 		{
-			return false;
+			return -2;
 		}
-		return true;
+		return 0;
 	}
 	
 	public boolean createMatch(String p1, String p2)
