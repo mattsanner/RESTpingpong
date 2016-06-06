@@ -138,7 +138,7 @@ public class HomeController {
 	@RequestMapping(value="/create_player", params={"firstName", "lastName"})
 	public String create_player(Model model, @RequestParam("firstName") String fN, @RequestParam("lastName") String lN)
 	{
-		InitializeClient();
+		InitializeClient();		
 		if(resultSetEmpty(client.querySchema(fN, lN)))
 		{
 			 boolean flag = client.createPlayer(fN,lN);

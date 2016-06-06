@@ -1,5 +1,7 @@
 package project.pingpong.myapp;
 
+import java.text.DecimalFormat;
+
 public class PingPongMatch {
 	private String player1;
 	private String player2;
@@ -7,6 +9,13 @@ public class PingPongMatch {
 	private double p2Score;
 	private int p1Wins;
 	private int p2Wins;
+	private DecimalFormat df;
+	
+	public PingPongMatch()
+	{
+		df = new DecimalFormat();
+		df.setMaximumFractionDigits(0);
+	}
 	
 	public String getPlayer1() {
 		return player1;
@@ -44,6 +53,13 @@ public class PingPongMatch {
 	public void setP2Wins(int p2Wins) {
 		this.p2Wins = p2Wins;
 	}
-	
+	public String getFormattedP1Score()
+	{
+		return df.format(p1Score);
+	}
+	public String getFormattedP2Score()
+	{
+		return df.format(p2Score);
+	}
 	
 }
