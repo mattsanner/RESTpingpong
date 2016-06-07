@@ -235,9 +235,10 @@ public class PingPongClient {
 						", p1wins = " + ppm.getP1Wins() + ", p2wins = " + ppm.getP2Wins() +
 						" WHERE player1 = '" + p1 + "' AND player2 = '" + p2 + "';");
 		session.execute(exString);
+		int i = getMatchListKey();
 		exString = ("INSERT INTO pingpong.matchList " + 
-							"(time, p1score, p2score, player1, player2) " +
-							"VALUES (toTimestamp(now()), " + p1Score + ", " + p2Score + ", '" +
+							"(key, time, p1score, p2score, player1, player2) " +
+							"VALUES (" + i + ", toTimestamp(now()), " + p1Score + ", " + p2Score + ", '" +
 							p1 + "', '" + p2 +"');");	
 		session.execute(exString);
 		}
@@ -248,9 +249,10 @@ public class PingPongClient {
 					", p1wins = " + ppm.getP1Wins() + ", p2wins = " + ppm.getP2Wins() +
 					" WHERE player1 = '" + p2 + "' AND player2 = '" + p1 + "';");
 			session.execute(exString);
+			int i = getMatchListKey();
 			exString = ("INSERT INTO pingpong.matchList " + 
-						"(time, p1score, p2score, player1, player2) " +
-						"VALUES (toTimestamp(now()), " + p2Score + ", " + p1Score + ", '" +
+						"(key, time, p1score, p2score, player1, player2) " +
+						"VALUES (" + i + ", toTimestamp(now()), " + p2Score + ", " + p1Score + ", '" +
 						p2 + "', '" + p1 +"');");	
 			session.execute(exString);
 		}
@@ -281,5 +283,13 @@ public class PingPongClient {
 		session.execute(
 				"DELETE FROM pingpong.players WHERE " +
 				"firstName = " + firstName + "AND lastName = " + lastName + ";");
-	}	
+	}
+	public int getMatchListKey()
+	{
+		ResultSet rs = session.execute("SELECT * FROM pingpong.matchKeys;");
+		List<Row> rl = rs.all();
+		session.execute("UPDATE pingpong.matchKeys SET keycount = keycount + 1 WHERE name = 'counter';");
+		int temp = Integer.parseInt(rl.get(0).getObject("keycount").toString());
+		return temp;
+	}
 }
