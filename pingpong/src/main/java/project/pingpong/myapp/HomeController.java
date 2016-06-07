@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Collections;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,6 +165,54 @@ public class HomeController {
 		}		 
 	}
 	
+	@RequestMapping(value="/leaderboard_wins")
+	public String leaderboard_wins(Model model)
+	{
+		InitializeClient();
+		PingPongPlayer[] players = client.getPlayers();
+		ArrayList<PingPongPlayer> sorted = new ArrayList<PingPongPlayer>();
+		
+		for(PingPongPlayer p : players)
+		{
+			sorted.add(p);
+		}
+		sorted.sort(PingPongPlayer.winComparator);
+		players = sorted.toArray(players);
+		PingPongPlayer[] flipped = new PingPongPlayer[players.length];
+		for(int i = 0; i < players.length; i++)
+		{
+			flipped[players.length - 1 - i] = players[i];
+		}
+		model.addAttribute("players", flipped);
+		model.addAttribute("leaderboard_type", "Wins");
+		CloseClient();
+		return "leaderboard";
+	}
+	
+	@RequestMapping(value="/leaderboard_points")
+	public String leaderboard_points(Model model)
+	{
+		InitializeClient();
+		PingPongPlayer[] players = client.getPlayers();
+		ArrayList<PingPongPlayer> sorted = new ArrayList<PingPongPlayer>();
+		
+		for(PingPongPlayer p : players)
+		{
+			sorted.add(p);
+		}
+		sorted.sort(PingPongPlayer.pointsComparator);
+		players = sorted.toArray(players);
+		PingPongPlayer[] flipped = new PingPongPlayer[players.length];
+		for(int i = 0; i < players.length; i++)
+		{
+			flipped[players.length - 1 - i] = players[i];
+		}
+		model.addAttribute("players", flipped);
+		model.addAttribute("leaderboard_type", "Points Scored");
+		CloseClient();
+		return "leaderboard";
+	}	
+	
 	public boolean resultSetEmpty(ResultSet r)
 	{
 		List<Row> rows = r.all();
@@ -184,5 +234,6 @@ public class HomeController {
 	public void CloseClient(){
 		client.close();		
 	}
+	
 	
 }

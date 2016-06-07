@@ -1,5 +1,6 @@
 package project.pingpong.myapp;
 import java.text.DecimalFormat;
+import java.util.Comparator;
 
 public class PingPongPlayer {
 	private String firstName;
@@ -89,4 +90,62 @@ public class PingPongPlayer {
 	{
 		return df.format(scoreAgainst);
 	}
+	
+	public static Comparator<PingPongPlayer> winComparator = new Comparator<PingPongPlayer>()
+	{
+		public int compare(PingPongPlayer p1, PingPongPlayer p2)
+		{
+			if(p1.wins == p2.wins)
+			{
+				if(p1.losses == p2.losses)
+				{
+					if(p1.scoreFor == p2.scoreFor)
+					{
+						return 0;
+					}
+					else
+					{
+						return p1.scoreFor < p2.scoreFor ? -1 : 1;
+					}
+				}
+				else
+				{
+					return p1.losses > p2.losses ? -1 : 1;
+				}
+			}
+			else
+			{
+				return p1.wins < p2.wins ? -1 : 1;
+			}
+		}
+	};
+	
+	public static Comparator<PingPongPlayer> pointsComparator = new Comparator<PingPongPlayer>()
+	{
+		public int compare(PingPongPlayer p1, PingPongPlayer p2)
+		{
+			if(p1.scoreFor == p2.scoreFor)
+			{
+				if(p1.scoreAgainst == p2.scoreAgainst)
+				{
+					if(p1.wins == p2.wins)
+					{
+						return 0;
+					}
+					else
+					{
+						return p1.wins < p2.wins ? -1 : 1;
+					}
+				}
+				else
+				{
+					return p1.scoreAgainst > p2.scoreAgainst ? -1 : 1;
+				}
+			}
+			else
+			{
+				return p1.scoreFor < p2.scoreFor ? -1 : 1;
+			}
+		}
+	};
 }
