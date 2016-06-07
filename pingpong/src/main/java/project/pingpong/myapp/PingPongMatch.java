@@ -1,6 +1,7 @@
 package project.pingpong.myapp;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 
 public class PingPongMatch {
 	private String player1;
@@ -9,6 +10,7 @@ public class PingPongMatch {
 	private double p2Score;
 	private int p1Wins;
 	private int p2Wins;
+	private Date date;
 	private DecimalFormat df;
 	
 	public PingPongMatch()
@@ -61,5 +63,12 @@ public class PingPongMatch {
 	{
 		return df.format(p2Score);
 	}
-	
+	public Date getDate()
+	{
+		return date;
+	}
+	public void setDate(Date d)
+	{
+		this.date = d;
+	}	
 }

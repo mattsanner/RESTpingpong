@@ -213,6 +213,24 @@ public class HomeController {
 		return "leaderboard";
 	}	
 	
+	@RequestMapping(value="/recent_matches")
+	public String recent_matches(Model model)
+	{
+		InitializeClient();
+		PingPongMatch[] matches = client.getRecentMatches();
+		int i = 0;
+		int len = matches.length;
+		PingPongMatch[] flipped = new PingPongMatch[len];		
+		while(i<len)
+		{
+			flipped[len-1-i] = matches[i];
+			i++;
+		}
+		model.addAttribute("matches", flipped);
+		CloseClient();
+		return "recent_matches";
+	}
+	
 	public boolean resultSetEmpty(ResultSet r)
 	{
 		List<Row> rows = r.all();

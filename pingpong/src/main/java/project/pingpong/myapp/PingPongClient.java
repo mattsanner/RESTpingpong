@@ -1,8 +1,8 @@
 package project.pingpong.myapp;
 
 import java.util.ArrayList;
-
-import java.util.*;
+import java.util.List;
+import java.util.Date;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
@@ -262,6 +262,39 @@ public class PingPongClient {
 			return -2;
 		}
 		return 0;
+	}
+	
+	public PingPongMatch[] getRecentMatches()
+	{
+		ResultSet rs = session.execute("SELECT * FROM pingpong.matchList LIMIT 10;");
+		List<Row> rowList = rs.all();
+		PingPongMatch[] matches;
+		if(rowList.size() > 10)
+		{
+			matches = new PingPongMatch[10];
+		}
+		else
+		{
+			matches = new PingPongMatch[rowList.size()];
+		}
+		int i = 0;
+		for(Row r : rowList)
+		{
+			if(i>10)
+			{
+				break;
+			}
+			matches[i] = new PingPongMatch();
+			matches[i].setPlayer1(r.getString("player1"));
+			matches[i].setPlayer2(r.getString("player2"));
+			matches[i].setP1Score(r.getInt("p1score"));
+			matches[i].setP2Score(r.getInt("p2score"));
+			Object o = r.getObject("time");
+			matches[i].setDate((Date) o);
+			i++;
+		}
+		
+		return matches;
 	}
 	
 	public boolean createMatch(String p1, String p2)
