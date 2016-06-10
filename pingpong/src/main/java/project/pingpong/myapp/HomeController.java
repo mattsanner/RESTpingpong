@@ -26,6 +26,7 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private PingPongClient client = new PingPongClient();
+	boolean initTried = false;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -40,6 +41,13 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
+		
+		if(!initTried)
+		{
+			InitializeClient();
+			client.initializeDatabase();
+			CloseClient();
+		}
 		
 		return "home";
 	}

@@ -27,6 +27,25 @@ public class PingPongClient {
 		session = cluster.connect();
 	}
 	
+	//DEBUG
+	public void initializeDatabase()
+	{
+		session.execute("CREATE KEYSPACE IF NOT EXISTS pingpong WITH replication " + 
+			      "= {'class':'SimpleStrategy', 'replication_factor':3};");
+		session.execute("CREATE TABLE IF NOT EXISTS pingpong.players " +
+						"(firstName text, lastName text, wins int, losses int, pointsFor double, pointsAgainst double, " + 
+						"PRIMARY KEY (firstName, lastName));");
+		session.execute("CREATE TABLE IF NOT EXISTS pingpong.matches " +
+						"(player1 text, player2 text, p1score double, p2score double, p1wins int, p2wins int, " +
+						"PRIMARY KEY (player1, player2));");
+		session.execute("CREATE TABLE IF NOT EXISTS pingpong.matchList " +
+						"(key int, time timestamp, player1 text, player2 text, p1score int, p2score int, " +
+						"PRIMARY KEY (key, time));");
+		session.execute("CREATE TABLE IF NOT EXISTS pingpong.matchKeys " +
+						"(name text PRIMARY KEY, keycount counter);");
+		session.execute("UPDATE pingpong.matchKeys SET keycount = keycount + 1 WHERE name = 'counter';");
+	}
+	
 	public void close()
 	{
 		session.close();
