@@ -196,6 +196,28 @@ public class PingPongClient {
 		return match;
 	}
 	
+	public PingPongMatch[] getMatches()
+	{
+		ResultSet rs = session.execute("SELECT * FROM pingpong.matches;");
+		List<Row> rowList = rs.all();
+		PingPongMatch[] ppm = new PingPongMatch[rowList.size()];
+		int i = 0;
+		
+		for(Row r : rowList)
+		{
+			ppm[i] = new PingPongMatch();
+			ppm[i].setPlayer1(r.getString("player1"));
+			ppm[i].setPlayer2(r.getString("player2"));
+			ppm[i].setP1Score(r.getDouble("p1Score"));
+			ppm[i].setP1Wins(r.getInt("p1wins"));
+			ppm[i].setP2Score(r.getDouble("p2Score"));
+			ppm[i].setP2Wins(r.getInt("p2wins"));
+			i++;
+		}
+		
+		return ppm;
+	}
+	
 	public boolean createPlayer(String fN, String lN)
 	{
 		try

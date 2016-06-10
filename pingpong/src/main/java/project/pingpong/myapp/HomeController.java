@@ -145,13 +145,23 @@ public class HomeController {
 		return "show_records";
 	}
 	
-	@RequestMapping(value="/all_match_records")
+	@RequestMapping(value="/show_all_matches")
 	public String show_all_matches(Model model)
 	{
-		
-		
-		
-		return "show_records";
+		InitializeClient();
+		PingPongMatch[] ppm = client.getMatches();
+		if(ppm.length > 0)
+		{
+			model.addAttribute("matches", ppm);
+			CloseClient();
+			return "show_all_matches";
+		}
+		else
+		{
+			model.addAttribute("error", "Matches did not load successfully.");
+			CloseClient();
+			return "error";
+		}		
 	}
 	
 	@RequestMapping(value="/create_player", params={"firstName", "lastName"})
