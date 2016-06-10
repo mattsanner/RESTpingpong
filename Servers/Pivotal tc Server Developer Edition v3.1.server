@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<server auto-publish-setting="2" auto-publish-time="1" com.springsource.tcserver.asf="false" com.springsource.tcserver.name="base-instance" configuration-id="/Servers/Pivotal tc Server Developer Edition v3.1-config" deployDir="wtpwebapps" hostname="localhost" id="Pivotal tc Server Developer Edition v3.1" id-set="true" name="Pivotal tc Server Developer Edition v3.1" runtime-id="Pivotal tc Server Developer Edition (Runtime) v3.1" saveSeparateContextFiles="true" server-type="com.pivotal.server.tc.80" server-type-id="com.pivotal.server.tc.80" start-timeout="120" stop-timeout="15" testEnvironment="false" timestamp="6">
+  <list key="modules" value0="ping_pong::org.eclipse.jst.jee.server:ping_pong::jst.web::2.5"/>
+  <list key="addExtraVmArgs" value0="-Dinsight.enabled=false"/>
+  <list key="removeExtraVmArgs"/>
+</server>

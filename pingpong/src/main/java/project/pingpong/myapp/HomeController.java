@@ -26,7 +26,7 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private PingPongClient client = new PingPongClient();
-	boolean initTried = false;
+	private boolean initPassed = false;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -42,10 +42,10 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		if(!initTried)
+		if(!initPassed)
 		{
 			InitializeClient();
-			client.initializeDatabase();
+			initPassed = client.initializeDatabase();			
 			CloseClient();
 		}
 		
@@ -62,10 +62,10 @@ public class HomeController {
 		boolean intCast = true;
 		
 		//Split params into first and last names for player lookup
-		String[] firstLast = player1.split("_");
+		String[] firstLast = player1.split(" ");
 		String player1First = firstLast[0];
 		String player1Last = firstLast[1];
-		firstLast = player2.split("_");
+		firstLast = player2.split(" ");
 		String player2First = firstLast[0];
 		String player2Last = firstLast[1];
 		
@@ -119,7 +119,7 @@ public class HomeController {
 		}
 		else
 		{
-			PingPongMatch ppm = client.getMatch((player1First + " " + player1Last), (player2First + " " + player2Last));
+			PingPongMatch ppm = client.getMatch((player1First + " " + player1Last), (player2First + " " + player2Last), true);
 			if(ppm != null)
 			{
 				model.addAttribute("Match", ppm);
@@ -135,13 +135,22 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping("/show_records")
-	public String show_records(Model model)				//public PingPongPlayer[] show_records()
+	@RequestMapping(value="/match_record", params={"player1", "player2"})
+	public String show_records(Model model, @RequestParam("player1") String p1, @RequestParam("player2") String p2)				//public PingPongPlayer[] show_records()
 	{
 		InitializeClient();
-		PingPongPlayer[] retVal = client.getPlayers();
+		PingPongMatch retVal = client.getMatch(p1, p2, false);
 		CloseClient();
-		model.addAttribute("Players", retVal);		
+		model.addAttribute("match", retVal);		
+		return "show_records";
+	}
+	
+	@RequestMapping(value="/all_match_records")
+	public String show_all_matches(Model model)
+	{
+		
+		
+		
 		return "show_records";
 	}
 	

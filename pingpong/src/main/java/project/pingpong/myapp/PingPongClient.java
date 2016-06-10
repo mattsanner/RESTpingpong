@@ -28,22 +28,29 @@ public class PingPongClient {
 	}
 	
 	//DEBUG
-	public void initializeDatabase()
+	public boolean initializeDatabase()
 	{
-		session.execute("CREATE KEYSPACE IF NOT EXISTS pingpong WITH replication " + 
-			      "= {'class':'SimpleStrategy', 'replication_factor':3};");
-		session.execute("CREATE TABLE IF NOT EXISTS pingpong.players " +
-						"(firstName text, lastName text, wins int, losses int, pointsFor double, pointsAgainst double, " + 
-						"PRIMARY KEY (firstName, lastName));");
-		session.execute("CREATE TABLE IF NOT EXISTS pingpong.matches " +
-						"(player1 text, player2 text, p1score double, p2score double, p1wins int, p2wins int, " +
-						"PRIMARY KEY (player1, player2));");
-		session.execute("CREATE TABLE IF NOT EXISTS pingpong.matchList " +
-						"(key int, time timestamp, player1 text, player2 text, p1score int, p2score int, " +
-						"PRIMARY KEY (key, time));");
-		session.execute("CREATE TABLE IF NOT EXISTS pingpong.matchKeys " +
-						"(name text PRIMARY KEY, keycount counter);");
-		session.execute("UPDATE pingpong.matchKeys SET keycount = keycount + 1 WHERE name = 'counter';");
+		try
+		{
+			session.execute("CREATE KEYSPACE IF NOT EXISTS pingpong WITH replication " + 
+				      "= {'class':'SimpleStrategy', 'replication_factor':3};");
+			session.execute("CREATE TABLE IF NOT EXISTS pingpong.players " +
+							"(firstName text, lastName text, wins int, losses int, pointsFor double, pointsAgainst double, " + 
+							"PRIMARY KEY (firstName, lastName));");
+			session.execute("CREATE TABLE IF NOT EXISTS pingpong.matches " +
+							"(player1 text, player2 text, p1score double, p2score double, p1wins int, p2wins int, " +
+							"PRIMARY KEY (player1, player2));");
+			session.execute("CREATE TABLE IF NOT EXISTS pingpong.matchList " +
+							"(key int, time timestamp, player1 text, player2 text, p1score int, p2score int, " +
+							"PRIMARY KEY (key, time));");
+			session.execute("CREATE TABLE IF NOT EXISTS pingpong.matchKeys " +
+							"(name text PRIMARY KEY, keycount counter);");
+			session.execute("UPDATE pingpong.matchKeys SET keycount = keycount + 1 WHERE name = 'counter';");
+			return true;
+		}
+		catch(Exception e){
+			return false;
+		}
 	}
 	
 	public void close()
@@ -142,7 +149,7 @@ public class PingPongClient {
 		return play;
 	}
 	
-	public PingPongMatch getMatch(String player1, String player2)
+	public PingPongMatch getMatch(String player1, String player2, boolean creatingMatch)
 	{
 		PingPongMatch match = new PingPongMatch();
 		ResultSet rs = session.execute("SELECT * FROM pingpong.matches WHERE " +
@@ -166,10 +173,13 @@ public class PingPongClient {
 				}
 				else
 				{
-					createMatch(player1, player2);
-					rs = session.execute("SELECT * FROM pingpong.matches WHERE " +
-							"player1 = '" + player1 + "' AND player2 = '" + player2 +
-							"';");
+					if(creatingMatch)
+					{
+						createMatch(player1, player2);
+						rs = session.execute("SELECT * FROM pingpong.matches WHERE " +
+								"player1 = '" + player1 + "' AND player2 = '" + player2 +
+								"';");
+					}
 				}
 			}
 		}
@@ -206,7 +216,7 @@ public class PingPongClient {
 		String p1 = p1First + " " + p1Last;
 		String p2 = p2First + " " + p2Last;
 		
-		PingPongMatch ppm = getMatch(p1, p2);
+		PingPongMatch ppm = getMatch(p1, p2, true);
 		boolean flipped = false;
 				
 		
