@@ -4,8 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.lang.ProcessBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,26 +27,29 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private PingPongClient client = new PingPongClient();
 	private boolean initPassed = false;
+	private boolean initCassandra = false;
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+		/*logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		
 		String formattedDate = dateFormat.format(date);
 		
-		model.addAttribute("serverTime", formattedDate );
+		model.addAttribute("serverTime", formattedDate );*/
 		
 		if(!initPassed)
 		{
 			InitializeClient();
 			initPassed = client.initializeDatabase();			
 			CloseClient();
+		}
+		if(!initCassandra)
+		{
+			//ProcessBuilder pb = new ProcessBuilder("/home/matthew/Desktop/cassandra.sh");			
 		}
 		
 		return "home";
