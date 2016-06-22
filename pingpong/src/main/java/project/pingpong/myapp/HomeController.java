@@ -1,11 +1,10 @@
 package project.pingpong.myapp;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ArrayList;
-import java.lang.ProcessBuilder;
+import java.io.File;
+import java.io.InputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
@@ -31,16 +31,7 @@ public class HomeController {
 	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		/*logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );*/
-		
+	public String home(Locale locale, Model model) {		
 		if(!initPassed)
 		{
 			InitializeClient();
@@ -55,6 +46,15 @@ public class HomeController {
 		return "home";
 	}
 	
+	/*@RequestMapping(value="/cover.css", produces = "text/css")
+	@ResponseBody
+	public String cover_css()
+	{			
+		File path = new File("cover.css");
+		
+		return "cover";
+	}*/
+	
 	@RequestMapping(value= "/record_match", params = {"player1", "player2", "score1", "score2"})
 	public String record_match(@RequestParam("player1") String player1, @RequestParam("player2") String player2, @RequestParam("score1") String score1, @RequestParam("score2") String score2, Model model)
 	{
@@ -62,7 +62,6 @@ public class HomeController {
 		//String returnStr = "fail";
 		int sc1 = 0;
 		int sc2 = 0;
-		boolean intCast = true;
 		
 		//Split params into first and last names for player lookup
 		String[] firstLast = player1.split(" ");
@@ -87,7 +86,7 @@ public class HomeController {
 			return "error";
 		}
 		
-		if(!player1.equals(null) && !player2.equals(null) && intCast)
+		if(!player1.equals(null) && !player2.equals(null))
 		{				
 			if(!resultSetEmpty(rs1) && !resultSetEmpty(rs2))
 			{				
@@ -108,6 +107,7 @@ public class HomeController {
 			}
 		}
 		int result = client.recordMatch(player1First, player1Last, player2First, player2Last, sc1, sc2);
+		//Error checking to provide user with different feedback
 		if(result == -1)
 		{
 			model.addAttribute("error", "Player(s) in match do not exist, check spelling or create player before recording match.");
@@ -282,6 +282,4 @@ public class HomeController {
 	public void CloseClient(){
 		client.close();		
 	}
-	
-	
 }

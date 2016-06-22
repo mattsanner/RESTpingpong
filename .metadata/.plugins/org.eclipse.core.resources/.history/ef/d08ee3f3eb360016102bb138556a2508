@@ -1,0 +1,17 @@
+package pingpong.test;
+
+import org.testng.annotations.Test;
+import org.testng.Assert;
+import project.pingpong.myapp.HomeController;
+import org.springframework.ui.Model;
+
+public class testHomeController{
+  HomeController hc = new HomeController();
+  Model model;
+	
+  @Test
+  public void testCreatePlayer() {
+	  hc.create_player(model, "Carl", "Test");
+	  Assert.assertTrue(model.containsAttribute("newPlayer"));
+  }
+}

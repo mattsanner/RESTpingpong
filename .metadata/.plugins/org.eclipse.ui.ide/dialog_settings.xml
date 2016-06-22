@@ -138,6 +138,7 @@
 		<item value="org.springframework.ide.eclipse.webflow.feature:3.7.3.201602250914-RELEASE"/>
 		<item value="org.springsource.sts.package:3.7.3.201602251025-RELEASE-e46"/>
 		<item value="org.springsource.sts:3.7.3.201602251025-RELEASE"/>
+		<item value="org.testng.eclipse:6.9.11.201604020423"/>
 	</list>
 	<section name="ExternalProjectImportWizard">
 		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>

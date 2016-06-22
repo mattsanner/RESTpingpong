@@ -2,15 +2,14 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Show_Records</title>
+	<title>Match Record</title>
 </head>
 <body>
-<c:forEach items="${Players}" var="element">
-	<h1>${element.firstName} ${element.lastName}</h1>
-	<p>Wins: ${element.wins}</p>
-	<p>Losses: ${element.losses }</p>
-	<p>Points For: ${element.scoreFor }</p>
-	<p>Points Against: ${element.scoreAgainst }</p>
-</c:forEach>
+<h1>${match.player1 }</h1>
+<p>Overall Score: ${match.formattedP1Score } </p>
+<p>Overall Wins: ${match.p1Wins } </p>
+<h1>${match.player2}</h1>
+<p>Overall Score: ${match.formattedP2Score }</p>
+<p>Overall Wins: ${match.p2Wins } </p>
 </body>
 </html>
