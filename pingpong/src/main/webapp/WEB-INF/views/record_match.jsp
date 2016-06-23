@@ -29,40 +29,33 @@
 	<link href=<c:url value="/resources/cover.css" /> rel="stylesheet">
 </head>
 <body>
-<h2>Match History for ${Match.player1 } & ${Match.player2 }</h2>
-<div class="container-fluid">
-	<div class="row">
-		<div class="table-responsive">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Player Name</th>
-						<th>Overall Score</th>
-						<th>Overall Wins</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr style="background-color:rgb(128,128,128)">
-						<td>${Match.player1 }</td>
-						<td>${Match.formattedP1Score }</td>
-						<td>${Match.p1Wins }</td>
-					</tr>
-					<tr>
-						<td>${Match.player2}</td>
-						<td>${Match.formattedP2Score }</td>
-						<td>${Match.p2Wins }</td>
-					</tr>
-				</tbody>
-			</table>
+	<h2>Match History for ${Match.player1 } & ${Match.player2 }</h2>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Player Name</th>
+							<th>Overall Score</th>
+							<th>Overall Wins</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="background-color:rgb(128,128,128)">
+							<td>${Match.player1 }</td>
+							<td>${Match.formattedP1Score }</td>
+							<td>${Match.p1Wins }</td>
+						</tr>
+						<tr>
+							<td>${Match.player2}</td>
+							<td>${Match.formattedP2Score }</td>
+							<td>${Match.p2Wins }</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
-</div>
-<!--  
-<h1>${Match.player1 }</h1>
-<p>Overall Score: ${Match.formattedP1Score } </p>
-<p>Overall Wins: ${Match.p1Wins } </p>
-<h1>${Match.player2}</h1>
-<p>Overall Score: ${Match.formattedP2Score }</p>
-<p>Overall Wins: ${Match.p2Wins } </p> -->
 </body>
 </html>
