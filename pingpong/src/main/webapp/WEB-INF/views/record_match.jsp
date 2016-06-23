@@ -26,11 +26,12 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
 	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	
-	<link href=<c:url value="/resources/dashboard.css" /> rel="stylesheet">
+	<link href=<c:url value="/resources/cover.css" /> rel="stylesheet">
 </head>
 <body>
+<h2>Match History for ${Match.player1 } & ${Match.player2 }</h2>
 <div class="container-fluid">
-	<div class="row"></div>
+	<div class="row">
 		<div class="table-responsive">
 			<table class="table table-striped">
 				<thead>
@@ -41,8 +42,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>${Match.player1 }</th>
+					<tr style="background-color:rgb(128,128,128)">
+						<td>${Match.player1 }</td>
 						<td>${Match.formattedP1Score }</td>
 						<td>${Match.p1Wins }</td>
 					</tr>
@@ -50,6 +51,7 @@
 						<td>${Match.player2}</td>
 						<td>${Match.formattedP2Score }</td>
 						<td>${Match.p2Wins }</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
