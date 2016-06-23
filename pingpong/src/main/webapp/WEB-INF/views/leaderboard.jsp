@@ -98,6 +98,10 @@
 	</c:forEach>
 	</c:if>
 	</table>
+	
+	<p class="lead">
+		<a href="/myapp/" class="btn btn-lg btn-default">Home</a>
+	</p>
 
 
 <script>
