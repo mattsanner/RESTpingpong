@@ -21,10 +21,10 @@ Contact me if you would like to be involved in some way.
 
 Started as a research project to cover some of the technologies I will be using at work.
 
-Credits
+# Credits
 
 Author: mattsanner
 Help From: djbamba
 
-License:
+# License:
 Currently - None
