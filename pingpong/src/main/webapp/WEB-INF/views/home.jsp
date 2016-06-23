@@ -38,14 +38,14 @@
 	    	<h3 class="masthead-brand">Xpanxion Ping Pong Record Book</h3>	    	
 	      		<nav>
 				  <ul class="nav masthead-nav">
-		  			<li id="HomeLink" class="active"><a href="#">Home</a></li>
-		  			<li id="NavLink" onclick="NavClick()"><a href="#">Navigation</a></li>
+		  			<li id="HomeLink" onclick="HomeClick()" class="active"><a href="#">Home</a></li>
+		  			<li id="NavLink" onclick="NavClick()" class=""><a href="#">Navigation</a></li>
 				  </ul>
 	      		</nav>
       	  </div>
 	    </div>
 
-	  <div class="inner cover" id="HomeText">
+	  <div class="inner cover" id="HomeText" style="display:inline">
 	    <h1 class="cover-heading">Welcome</h1>
 		<p>
 			You have reached the record center for Xpanxion-Manhattan's Ping Pong matches.
@@ -54,7 +54,7 @@
 		</p>	
 	  </div>
 	  
-	  <div class="inner cover" id="NavText">
+	  <div class="inner cover" id="NavText" style="display:none">
 	    <h1 class="cover-heading">Site Navigation</h1>
 			<h3>Leaderboard:</h3> 
 			<p>Sorted by wins: /leaderboard_wins<br>Sorted by points scored: /leaderboards_points</p>
@@ -81,17 +81,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript">
     	function HomeClick() {
-    		if(!(hl.getAttribute("class") == "active"))    			
-	   			var hl = document.getElementById("HomeText");
-	   			hl.stle.visibility = "visible";
-	   			var nl = document.getElementById("NavText");
-	   			nl.stly.visibility= "hidden";
-	   			//finish this
-	   				
+    		var nl = document.getElementById("NavLink");
+    		if(nl.getAttribute("class") == "active")    			
+	   			var ht = document.getElementById("HomeText");
+	   			ht.style.display = "inline";
+	   			var nt = document.getElementById("NavText");
+	   			nt.style.display = "none";
+	   			var hl = document.getElementById("HomeLink");
+   				hl.setAttribute("class", "active");
+   				nl.setAttribute("class", "");	 
     	}
     	
     	function NavClick() {
-    		
+    		var hl = document.getElementById("HomeLink");
+    		if(hl.getAttribute("class") == "active")    			
+	   			var ht = document.getElementById("HomeText");
+	   			ht.style.display = "none";
+	   			var nt = document.getElementById("NavText");
+	   			nt.style.display = "inline";	   			
+   				hl.setAttribute("class", "");
+   				var nl = document.getElementById("NavLink");
+   				nl.setAttribute("class", "active");	
     	}
     </script>
     <!--  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>-->
