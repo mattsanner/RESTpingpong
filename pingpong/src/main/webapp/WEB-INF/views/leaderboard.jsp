@@ -15,7 +15,7 @@
 		Leaderboard - Sorted By <c:out value="${leaderboard_type}"/>		
 	</title>	
 	
-		<!-- Bootstrap core CSS -->
+	<!-- Bootstrap core CSS -->
 	<!-- ../../../resource/bootstrap/dist/css/bootstrap.min.css -->
    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
    		integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
@@ -57,12 +57,6 @@
 					<td>${element.formattedScoreFor }</td>
 					<td>${element.formattedScoreAgainst }</td>
 				</tr>
-				<!--  
-				<h2>${element.firstName} ${element.lastName}</h2>
-				<p>Wins: ${element.wins}</p>
-				<p>Losses: ${element.losses }</p>
-				<p>Points For: ${element.formattedScoreFor }</p>
-				<p>Points Against: ${element.formattedScoreAgainst }</p> -->
 			</c:forEach>
 		
 		</c:if>
@@ -88,13 +82,6 @@
 			<td>${element.wins }</td>
 			<td>${element.losses }</td>
 		</tr>
-		
-		
-		<!-- <h2>${element.firstName} ${element.lastName}</h2>
-		<p>Points For: ${element.formattedScoreFor }</p>
-		<p>Points Against: ${element.formattedScoreAgainst }</p>
-		<p>Wins: ${element.wins}</p>
-		<p>Losses: ${element.losses }</p>	 -->
 	</c:forEach>
 	</c:if>
 	</table>
