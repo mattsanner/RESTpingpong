@@ -73,7 +73,7 @@ public class HomeController {
 		InitializeClient();
 		
 		//preliminary error checking on values
-		if(player1.equals(null) || player2.equals(null)){
+		if(player1.equals(null) || player2.equals(null) || player1.equals("") || player2.equals("")){
 			model.addAttribute("error", "There was a problem with a player's name, check your values and retry");
 			CloseClient();
 			return "error";
@@ -82,7 +82,14 @@ public class HomeController {
 			model.addAttribute("error", "Cannot have a match between the same player.");
 			CloseClient();
 			return "error";
-		}		
+		}
+		if(player1.equals("Player 1") || player2.equals("Player 2"))
+		{
+			model.addAttribute("error", "Please select a valid player from the drop down.\nIf no players can be selected please create players first.");
+			CloseClient();
+			return "error";
+		}
+			
 		
 		//ints for parsing score
 		int sc1 = 0;
