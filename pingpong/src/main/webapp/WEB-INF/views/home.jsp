@@ -60,15 +60,25 @@
 	  <div class="inner cover" id="NavText" style="display:none">
 	    <h1 class="cover-heading">Site Navigation</h1>
 			<h3>Leaderboard:</h3> 
-			<p>Sorted by wins: /leaderboard_wins<br>Sorted by points scored: /leaderboards_points</p>
-			<h3>Recording a Match:</h3>
-			<p>/record_match?player1=First Last&player2=First Last&score1=int&score2=int</p>
+			<!--  <p>Sorted by wins: /leaderboard_wins<br>Sorted by points scored: /leaderboards_points</p> -->
+			<div class="btn-group">
+				<button class="btn btn-primary" type="button">By Wins</button>
+				<button class="btn btn-primary" type="button">By Points</button>
+			</div>
+			<!--<h3>Recording a Match:</h3>
+			 <p>/record_match?player1=First Last&player2=First Last&score1=int&score2=int</p> -->
 			<h3>Individual Match History:</h3>
-			<p>/match_record?player1=First Last&player2=First Last</p>
+			<p>/match_record?player1=First Last&player2=First Last</p>	
 			<h3>All Match History:</h3>
-			<p>/show_all_matches</p>
+			<!-- <p>/show_all_matches</p> -->
+			<div class="btn-group">
+				<button class="btn btn-primary" type="button">Show All Matches</button>
+			</div>
 			<h3>Recent Matches:</h3>
-			<p>/recent_matches</p>	
+			<!-- <p>/recent_matches</p>	-->
+			<div class="btn-group">
+				<button class="btn btn-primary" type="button">Recent Matches</button>
+			</div>
 	  </div>
 	  
 	  <div class="inner cover" id="RSText" style="display:none">
@@ -97,9 +107,9 @@
   				</div>
   			</div>
   			
-  			<input type="text" name="p1score" style="color:black;width:100px" value="p1score">
-  			<input type="text" name="p2score" style="color:black;width:100px" value="p2score">
-  			<br>
+  			<input type="text" name="p1score" style="color:black;width:75px" value="p1score">
+  			<input type="text" name="p2score" style="color:black;width:75px" value="p2score">
+  			<br><br>
   			<button class="btn btn-primary" type="button" onclick="recordScore()">Record Score</button>  			
 	  </div>
 	  
