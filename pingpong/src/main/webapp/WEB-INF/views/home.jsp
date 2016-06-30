@@ -40,7 +40,7 @@
 	    	<h3 class="masthead-brand">Xpanxion Ping Pong Record Book</h3>	    	
 	      		<nav>
 				  <ul class="nav masthead-nav">
-		  			<li id="HomeLink" onclick="HomeClick()" class="active"><a href="#">Home</a></li>
+		  			<li id="HomeLink" onclick="HomeClick()" class="active"><a href="">Home</a></li>
 		  			<li id="NavLink" onclick="NavClick()" class=""><a href="#">Navigation</a></li>
 		  			<li id="RSLink" onclick="RSClick()" class=""><a href="#">Record Score</a></li>
 				  </ul>
@@ -75,7 +75,7 @@
   		<h1 class="cover-heading">Record a Score</h1>
   			<div class="btn-group" id="p1">
   				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  				<span class="selection">Player 1</span>
+  				<span class="selection" id="p1name">Player 1</span>
   				<span class="caret"></span>
   				</button>
   				<div class="dropdown-menu" aria-labelledby="menu1" id="p1dm"> <!-- role="menu" aria-labelledby="menu1" -->
@@ -86,7 +86,7 @@
   			</div>
   			<div class="btn-group" id="p2">
   				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  				<span class="selection">Player 2</span>
+  				<span class="selection" id="p2name">Player 2</span>
   				<span class="caret"></span>
   				</button>
   				<div class="dropdown-menu" aria-labelledby="menu1" id="p2dm"> <!-- role="menu" aria-labelledby="menu1" -->
@@ -97,9 +97,10 @@
   				</div>
   			</div>
   			
-  			<input type="text" name="p1score" style="color: black">
-  			<input type="text" name="p2score" style="color: black">
-  			<input type="submit" value="Record Score" name="recordScore">
+  			<input type="text" name="p1score" style="color:black;width:100px" value="p1score">
+  			<input type="text" name="p2score" style="color:black;width:100px" value="p2score">
+  			<br>
+  			<button class="btn btn-primary" type="button" onclick="recordScore()">Record Score</button>  			
 	  </div>
 	  
 	  <div class="mastfoot">
@@ -159,7 +160,21 @@
    				var hl = document.getElementById("HomeLink");
 				hl.setAttribute("class", "");
 				rsl.setAttribute("class", "active"); 
-    	} 	
+    	}
+    	
+    	function recordScore() {
+    		 var URL = document.URL;
+    		 var newURL = "";
+    		 var i = 0;
+    		 for(i = 0; i< URL.length - 1; i++)
+   			 {
+	 			 newURL = newURL + URL[i];
+   			 }
+    		 newURL = newURL + "record_match?player1=" + $(".selection#p1name").text() + "&player2=" + 
+    				 $(".selection#p2name").text() + "&score1=" + $("[name='p1score']").val() + 
+    				 "&score2=" + $("[name='p2score']").val();
+    		 window.location = newURL;
+    	}
     	
     </script>
     <script>
