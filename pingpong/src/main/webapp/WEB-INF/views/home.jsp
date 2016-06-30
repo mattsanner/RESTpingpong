@@ -97,8 +97,8 @@
   				</div>
   			</div>
   			
-  			<input type="text" name="p1score" style="color:'black'">
-  			<input type="text" name="p2score" style="color:'black'">
+  			<input type="text" name="p1score" style="color: black">
+  			<input type="text" name="p2score" style="color: black">
   			<input type="submit" value="Record Score" name="recordScore">
 	  </div>
 	  
