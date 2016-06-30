@@ -8,9 +8,11 @@
 	
 	<meta name="description" content="Xpanxion Ping Pong Records">
 	<meta name="author" content="Sannman">
-	<!-- <link rel="icon" href="../../favicon.ico"> -->
 
 	<title>Home</title>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	
 
 	<!-- Bootstrap core CSS -->
 	<!-- ../../../resource/bootstrap/dist/css/bootstrap.min.css -->
@@ -40,6 +42,7 @@
 				  <ul class="nav masthead-nav">
 		  			<li id="HomeLink" onclick="HomeClick()" class="active"><a href="#">Home</a></li>
 		  			<li id="NavLink" onclick="NavClick()" class=""><a href="#">Navigation</a></li>
+		  			<li id="RSLink" onclick="RSClick()" class=""><a href="#">Record Score</a></li>
 				  </ul>
 	      		</nav>
       	  </div>
@@ -48,7 +51,7 @@
 	  <div class="inner cover" id="HomeText" style="display:inline">
 	    <h1 class="cover-heading">Welcome</h1>
 		<p>
-			You have reached the record center for Xpanxion-Manhattan's Ping Pong matches.
+			You have reached the record center for Xpanxion-Manhattan's Ping Pong matches.<br>
 			For directions on reaching different records or recording matches go to the 
 			"Navigation" tab.
 		</p>	
@@ -68,47 +71,109 @@
 			<p>/recent_matches</p>	
 	  </div>
 	  
+	  <div class="inner cover" id="RSText" style="display:none">
+  		<h1 class="cover-heading">Record a Score</h1>
+  			<div class="btn-group" id="p1">
+  				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  				<span class="selection">Player 1</span>
+  				<span class="caret"></span>
+  				</button>
+  				<div class="dropdown-menu" aria-labelledby="menu1" id="p1dm"> <!-- role="menu" aria-labelledby="menu1" -->
+  					<c:forEach items="${players }" var="player">  					
+  						<li role="presentation" id="${player.firstName} ${player.lastName}"><a href="#">${player.firstName} ${player.lastName}</a></li>						
+  					</c:forEach>
+  				</div>
+  			</div>
+  			<div class="btn-group" id="p2">
+  				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  				<span class="selection">Player 2</span>
+  				<span class="caret"></span>
+  				</button>
+  				<div class="dropdown-menu" aria-labelledby="menu1" id="p2dm"> <!-- role="menu" aria-labelledby="menu1" -->
+  					<c:forEach items="${players }" var="player">  					
+  						<li role="presentation" id="${player.firstName} ${player.lastName}"><a href="#">${player.firstName} ${player.lastName}</a></li>
+  						<div class="dropdown-divider"></div>  						
+  					</c:forEach>
+  				</div>
+  			</div>
+  			
+  			<input type="text" name="p1score" style="color:'black'">
+  			<input type="text" name="p2score" style="color:'black'">
+  			<input type="submit" value="Record Score" name="recordScore">
+	  </div>
+	  
 	  <div class="mastfoot">
 	  	<div class="inner">
-	  		<p>Developed by Matt for Project Research :)</p>
-	  		<p>Special Thanks to DJ for his WebDev expertise</p>
+	  		<p>Developed by Matt for Project Research</p>
+	  		<p>Special Thanks to DJ for his development help</p>
 	  	</div>
 	  </div>
 	</div>
   </div>
 </div>
 	  
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript">
     	function HomeClick() {
-    		var nl = document.getElementById("NavLink");
-    		if(nl.getAttribute("class") == "active")    			
-	   			var ht = document.getElementById("HomeText");
-	   			ht.style.display = "inline";
+    		var hl = document.getElementById("HomeLink");
+    		if(hl.getAttribute("class") == "")   			
 	   			var nt = document.getElementById("NavText");
 	   			nt.style.display = "none";
-	   			var hl = document.getElementById("HomeLink");
+	   			var rst = document.getElementById("RSText");
+	   			rst.style.display = "none";
+	   			var ht = document.getElementById("HomeText");
+	   			ht.style.display = "inline";
+	   			var nl = document.getElementById("NavLink");
+	   			nl.setAttribute("class", "");
+   				var rsl = document.getElementById("RSLink");
+   				rsl.setAttribute("class", "");
    				hl.setAttribute("class", "active");
-   				nl.setAttribute("class", "");	 
     	}
     	
     	function NavClick() {
-    		var hl = document.getElementById("HomeLink");
-    		if(hl.getAttribute("class") == "active")    			
+    		var nl = document.getElementById("NavLink");
+    		if(nl.getAttribute("class") == "")    			
 	   			var ht = document.getElementById("HomeText");
 	   			ht.style.display = "none";
+	   			var rst = document.getElementById("RSText");
+	   			rst.style.display = "none";
 	   			var nt = document.getElementById("NavText");
 	   			nt.style.display = "inline";	   			
+   				var hl = document.getElementById("HomeLink");
    				hl.setAttribute("class", "");
-   				var nl = document.getElementById("NavLink");
+   				var rsl = document.getElementById("RSLink");
+   				rsl.setAttribute("class", "");   				
    				nl.setAttribute("class", "active");	
     	}
+    	
+    	function RSClick() {
+    		var rsl = document.getElementById("RSLink");
+    		if(rsl.getAttribute("class") == "")
+    			var ht = document.getElementById("HomeText");
+   				ht.style.display = "none";
+   				var nt = document.getElementById("NavText");
+	   			nt.style.display = "none";
+	   			var rst = document.getElementById("RSText");
+	   			rst.style.display = "inline";
+    			var nl = document.getElementById("NavLink");
+    			nl.setAttribute("class", "");
+   				var hl = document.getElementById("HomeLink");
+				hl.setAttribute("class", "");
+				rsl.setAttribute("class", "active"); 
+    	} 	
+    	
     </script>
-    <!--  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>-->
-    <!-- <script src="../../dist/js/bootstrap.min.js"></script> -->
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug 
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
-		
-
+    <script>
+    	$(".dropdown-menu#p1dm li a").click(function(){
+   			$(this).parents("#p1").find('.selection').text($(this).text());
+   			$(this).parents("#p1").find('.selection').val($(this).text());
+    	});
+    </script>
+    
+    <script>
+    	$(".dropdown-menu#p2dm li a").click(function(){
+   			$(this).parents("#p2").find('.selection').text($(this).text());
+   			$(this).parents("#p2").find('.selection').val($(this).text());
+    	});
+    </script>
 </body>
 </html>

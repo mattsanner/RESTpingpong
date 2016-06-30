@@ -33,16 +33,28 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {		
 		if(!initPassed)
-		{
-			InitializeClient();
-			initPassed = client.initializeDatabase();			
-			CloseClient();
+		{			
+			try
+			{
+				InitializeClient();
+				initPassed = client.initializeDatabase();
+				CloseClient();
+			}
+			catch(Exception e)
+			{
+				model.addAttribute("error", "Cassandra is not initialized correctly, please restart Cassandra and try again.");				
+				return "error";
+			}
 		}
-		if(!initCassandra)
-		{
-			//git ProcessBuilder pb = new ProcessBuilder("/home/matthew/Desktop/cassandra.sh");			
-		}
+//		if(!initCassandra)
+//		{
+//			//git ProcessBuilder pb = new ProcessBuilder("/home/matthew/Desktop/cassandra.sh");			
+//		}
 		
+		InitializeClient();
+		PingPongPlayer[] ppp = client.getPlayers();
+		model.addAttribute("players", ppp);
+		CloseClient();
 		return "home";
 	}
 	
@@ -59,20 +71,22 @@ public class HomeController {
 	public String record_match(@RequestParam("player1") String player1, @RequestParam("player2") String player2, @RequestParam("score1") String score1, @RequestParam("score2") String score2, Model model)
 	{
 		InitializeClient();
-		//String returnStr = "fail";
+		
+		//preliminary error checking on values
+		if(player1.equals(null) || player2.equals(null)){
+			model.addAttribute("error", "There was a problem with a player's name, check your values and retry");
+			CloseClient();
+			return "error";
+		}
+		if(player2.equals(player1)){
+			model.addAttribute("error", "Cannot have a match between the same player.");
+			CloseClient();
+			return "error";
+		}		
+		
+		//ints for parsing score
 		int sc1 = 0;
-		int sc2 = 0;
-		
-		//Split params into first and last names for player lookup
-		String[] firstLast = player1.split(" ");
-		String player1First = firstLast[0];
-		String player1Last = firstLast[1];
-		firstLast = player2.split(" ");
-		String player2First = firstLast[0];
-		String player2Last = firstLast[1];
-		
-		ResultSet rs1 = client.querySchema(player1First, player1Last);
-		ResultSet rs2 = client.querySchema(player2First, player2Last);
+		int sc2 = 0;		
 		
 		try
 		{
@@ -86,26 +100,35 @@ public class HomeController {
 			return "error";
 		}
 		
-		if(!player1.equals(null) && !player2.equals(null))
+		//Split params into first and last names for player lookup
+		String[] firstLast = player1.split(" ");
+		String player1First = firstLast[0];
+		String player1Last = firstLast[1];
+		firstLast = player2.split(" ");
+		String player2First = firstLast[0];
+		String player2Last = firstLast[1];
+		
+		ResultSet rs1 = client.querySchema(player1First, player1Last);
+		ResultSet rs2 = client.querySchema(player2First, player2Last);
+		
+		if(!resultSetEmpty(rs1) && !resultSetEmpty(rs2))
 		{				
-			if(!resultSetEmpty(rs1) && !resultSetEmpty(rs2))
+			if(sc1 < sc2)
 			{				
-				if(sc1 < sc2)
-				{				
-					//Enter loss for player 1, sc1 is for, sc2 is against
-					client.updatePlayerRecord(player1First, player1Last, sc1, sc2, false);
-					//Enter win for player 2, sc2 is for, sc1 is against
-					client.updatePlayerRecord(player2First, player2Last, sc2, sc1, true);
-				}
-				else if(sc1 > sc2)
-				{
-					//Enter win for player 1, sc1 is for, sc2 is against
-					client.updatePlayerRecord(player1First, player1Last, sc1, sc2, true);
-					//Enter loss for player 2, sc2 is for, sc1 is against
-					client.updatePlayerRecord(player2First, player2Last, sc2, sc1, false);
-				}
+				//Enter loss for player 1, sc1 is for, sc2 is against
+				client.updatePlayerRecord(player1First, player1Last, sc1, sc2, false);
+				//Enter win for player 2, sc2 is for, sc1 is against
+				client.updatePlayerRecord(player2First, player2Last, sc2, sc1, true);
+			}
+			else if(sc1 > sc2)
+			{
+				//Enter win for player 1, sc1 is for, sc2 is against
+				client.updatePlayerRecord(player1First, player1Last, sc1, sc2, true);
+				//Enter loss for player 2, sc2 is for, sc1 is against
+				client.updatePlayerRecord(player2First, player2Last, sc2, sc1, false);
 			}
 		}
+		
 		int result = client.recordMatch(player1First, player1Last, player2First, player2Last, sc1, sc2);
 		//Error checking to provide user with different feedback
 		if(result == -1)
