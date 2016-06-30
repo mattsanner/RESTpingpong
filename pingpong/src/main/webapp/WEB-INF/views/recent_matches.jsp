@@ -43,7 +43,7 @@
 					</thead>
 					<tbody>												
 						<c:forEach items="${matches}" var="element">
-							<tr style="background-color:rgb(128,128,128)">
+							<tr>
 								<td>${element.player1 }</td>
 								<td>${element.player2 }</td>
 								<td>${element.p1Score } - ${element.p2Score }</td>

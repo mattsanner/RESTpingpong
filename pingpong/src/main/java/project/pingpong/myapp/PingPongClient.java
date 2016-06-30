@@ -286,10 +286,10 @@ public class PingPongClient {
 						", p1wins = " + ppm.getP1Wins() + ", p2wins = " + ppm.getP2Wins() +
 						" WHERE player1 = '" + p1 + "' AND player2 = '" + p2 + "';");
 		session.execute(exString);
-		int i = getMatchListKey();
+		//int i = getMatchListKey();
 		exString = ("INSERT INTO pingpong.matchList " + 
 							"(key, time, p1score, p2score, player1, player2) " +
-							"VALUES (" + i + ", toTimestamp(now()), " + p1Score + ", " + p2Score + ", '" +
+							"VALUES (1, toTimestamp(now()), " + p1Score + ", " + p2Score + ", '" +
 							p1 + "', '" + p2 +"');");	
 		session.execute(exString);
 		}
@@ -300,10 +300,10 @@ public class PingPongClient {
 					", p1wins = " + ppm.getP1Wins() + ", p2wins = " + ppm.getP2Wins() +
 					" WHERE player1 = '" + p2 + "' AND player2 = '" + p1 + "';");
 			session.execute(exString);
-			int i = getMatchListKey();
+			//int i = getMatchListKey();
 			exString = ("INSERT INTO pingpong.matchList " + 
 						"(key, time, p1score, p2score, player1, player2) " +
-						"VALUES (" + i + ", toTimestamp(now()), " + p2Score + ", " + p1Score + ", '" +
+						"VALUES (1, toTimestamp(now()), " + p2Score + ", " + p1Score + ", '" +
 						p2 + "', '" + p1 +"');");	
 			session.execute(exString);
 		}
@@ -317,7 +317,7 @@ public class PingPongClient {
 	
 	public PingPongMatch[] getRecentMatches()
 	{
-		ResultSet rs = session.execute("SELECT * FROM pingpong.matchList LIMIT 10;");
+		ResultSet rs = session.execute("SELECT * FROM pingpong.matchList WHERE key=1 ORDER BY time DESC LIMIT 15;");
 		List<Row> rowList = rs.all();
 		PingPongMatch[] matches;
 		if(rowList.size() > 10)
