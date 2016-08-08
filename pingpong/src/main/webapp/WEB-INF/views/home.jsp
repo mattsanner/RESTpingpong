@@ -62,8 +62,8 @@
 			<h3>Leaderboard:</h3> 
 			<!--  <p>Sorted by wins: /leaderboard_wins<br>Sorted by points scored: /leaderboards_points</p> -->
 			<div class="btn-group">
-				<button class="btn btn-primary" type="button">By Wins</button>
-				<button class="btn btn-primary" type="button">By Points</button>
+				<button class="btn btn-primary" onclick="goToLeaderboardWins()" id="button_wins" type="button">By Wins</button>
+				<button class="btn btn-primary" onclick="goToLeaderboardPoints()" id="button_points" type="button">By Points</button>
 			</div>
 			<!--<h3>Recording a Match:</h3>
 			 <p>/record_match?player1=First Last&player2=First Last&score1=int&score2=int</p> -->
@@ -72,12 +72,12 @@
 			<h3>All Match History:</h3>
 			<!-- <p>/show_all_matches</p> -->
 			<div class="btn-group">
-				<button class="btn btn-primary" type="button">Show All Matches</button>
+				<button class="btn btn-primary" onclick="goToAllMatches()" id="all_match" type="button">Show All Matches</button>
 			</div>
 			<h3>Recent Matches:</h3>
 			<!-- <p>/recent_matches</p>	-->
 			<div class="btn-group">
-				<button class="btn btn-primary" type="button">Recent Matches</button>
+				<button class="btn btn-primary" onclick="goToRecentMatches()" id="recent_match" type="button">Recent Matches</button>
 			</div>
 	  </div>
 	  
@@ -184,6 +184,54 @@
     				 $(".selection#p2name").text() + "&score1=" + $("[name='p1score']").val() + 
     				 "&score2=" + $("[name='p2score']").val();
     		 window.location = newURL;
+    	}
+    	
+    	function goToLeaderboardWins() {
+   		 var URL = document.URL;
+   		 var newURL = "";
+   		 var i = 0;
+   		 for(i = 0; i< URL.length - 1; i++)
+  			 {
+	 			 newURL = newURL + URL[i];
+  			 }
+   		 newURL = newURL + "/leaderboard_wins";
+   		 window.location = newURL;
+   		}
+    	
+    	function goToLeaderboardPoints() {
+      		 var URL = document.URL;
+      		 var newURL = "";
+      		 var i = 0;
+      		 for(i = 0; i< URL.length - 1; i++)
+     			 {
+   	 			 newURL = newURL + URL[i];
+     			 }
+      		 newURL = newURL + "/leaderboard_points";
+      		 window.location = newURL;
+      	}
+    	
+    	function goToAllMatches() {
+     		 var URL = document.URL;
+     		 var newURL = "";
+     		 var i = 0;
+     		 for(i = 0; i< URL.length - 1; i++)
+    			 {
+  	 			 newURL = newURL + URL[i];
+    			 }
+     		 newURL = newURL + "/show_all_matches";
+     		 window.location = newURL;
+     	}
+    	
+    	function goToRecentMatches() {
+    		 var URL = document.URL;
+     		 var newURL = "";
+     		 var i = 0;
+     		 for(i = 0; i< URL.length - 1; i++)
+    			 {
+  	 			 newURL = newURL + URL[i];
+    			 }
+     		 newURL = newURL + "/recent_matches";
+     		 window.location = newURL;
     	}
     	
     </script>
