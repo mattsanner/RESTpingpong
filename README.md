@@ -19,7 +19,7 @@ CREATE TABLE pingpong.players (
     pointsfor double,
     wins int,
     PRIMARY KEY (firstname, lastname)
-)
+);
 
 CREATE TABLE pingpong.matches (
     player1 text,
@@ -29,7 +29,7 @@ CREATE TABLE pingpong.matches (
     p2score double,
     p2wins int,
     PRIMARY KEY (player1, player2)
-)
+);
 
 CREATE TABLE pingpong.matchlist (
     key int,
@@ -39,7 +39,7 @@ CREATE TABLE pingpong.matchlist (
     player1 text,
     player2 text,
     PRIMARY KEY (key, time)
-) WITH CLUSTERING ORDER BY (time ASC)
+) WITH CLUSTERING ORDER BY (time ASC);
 
 # Usage
 
