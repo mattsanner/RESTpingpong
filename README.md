@@ -10,6 +10,7 @@ Must start cassandra before deploying the webapp.
 
 There is a relatively untested method for setting up database tables on start up.
 To create the tables by hand I used namespace pingpong and tables with create statements:
+
 CREATE TABLE pingpong.players (
     firstname text,
     lastname text,
