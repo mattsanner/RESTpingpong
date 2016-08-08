@@ -35,7 +35,7 @@
 	<thead>
 		<tr>
 			<th>Player 1</th>
-			<th>PLayer 2</th>
+			<th>Player 2</th>
 			<th>Player 1 Wins</th>
 			<th>Player 1 Score</th>
 			<th>Player 2 Wins</th>
@@ -55,6 +55,10 @@
 		</c:forEach>
 	</tbody>
 </table>
+
+<p class="lead">
+		<a href="/pingpong/" class="btn btn-lg btn-default">Home</a>
+</p>
 
 <script>
 function changeRowColor() {

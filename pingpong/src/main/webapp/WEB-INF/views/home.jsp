@@ -68,14 +68,40 @@
 			<!--<h3>Recording a Match:</h3>
 			 <p>/record_match?player1=First Last&player2=First Last&score1=int&score2=int</p> -->
 			<h3>Individual Match History:</h3>
-			<p>/match_record?player1=First Last&player2=First Last</p>	
-			<h3>All Match History:</h3>
-			<!-- <p>/show_all_matches</p> -->
+			<!-- <p>/match_record?player1=First Last&player2=First Last</p>	-->
+			
+			<div class="btn-group" id="p1">
+  				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  				<span class="selection" id="p1nameMatch">Player 1</span>
+  				<span class="caret"></span>
+  				</button>
+  				<div class="dropdown-menu" aria-labelledby="menu1" id="p1dm"> <!-- role="menu" aria-labelledby="menu1" -->
+  					<c:forEach items="${players }" var="player">  					
+  						<li role="presentation" id="${player.firstName} ${player.lastName}"><a href="#">${player.firstName} ${player.lastName}</a></li>						
+  					</c:forEach>
+  				</div>
+  			</div>
+  			<div class="btn-group" id="p2">
+  				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  				<span class="selection" id="p2nameMatch">Player 2</span>
+  				<span class="caret"></span>
+  				</button>
+  				<div class="dropdown-menu" aria-labelledby="menu1" id="p2dm"> <!-- role="menu" aria-labelledby="menu1" -->
+  					<c:forEach items="${players }" var="player">  					
+  						<li role="presentation" id="${player.firstName} ${player.lastName}"><a href="#">${player.firstName} ${player.lastName}</a></li>
+  						<div class="dropdown-divider"></div>  						
+  					</c:forEach>
+  				</div>
+  			</div>
+  			<div class="btn-group">
+				<button class="btn btn-primary" onclick="lookupMatch()" id="recent_match" type="button">Lookup Match</button>
+			</div>
+			
+			<h3>All Match History:</h3>			
 			<div class="btn-group">
 				<button class="btn btn-primary" onclick="goToAllMatches()" id="all_match" type="button">Show All Matches</button>
 			</div>
 			<h3>Recent Matches:</h3>
-			<!-- <p>/recent_matches</p>	-->
 			<div class="btn-group">
 				<button class="btn btn-primary" onclick="goToRecentMatches()" id="recent_match" type="button">Recent Matches</button>
 			</div>
@@ -106,9 +132,8 @@
   					</c:forEach>
   				</div>
   			</div>
-  			
-  			<input type="text" name="p1score" style="color:black;width:75px" value="p1score">
-  			<input type="text" name="p2score" style="color:black;width:75px" value="p2score">
+  			<input type="text" name="p1score" style="color:black;width:75px" placeholder="p1score">
+  			<input type="text" name="p2score" style="color:black;width:75px" placeholder="p2score">
   			<br><br>
   			<button class="btn btn-primary" type="button" onclick="recordScore()">Record Score</button>  			
 	  </div>
@@ -116,7 +141,7 @@
 	  <div class="mastfoot">
 	  	<div class="inner">
 	  		<p>Developed by Matt for Project Research</p>
-	  		<p>Special Thanks to DJ for his development help</p>
+	  		<p>Special Thanks to DJ for his web development help</p>
 	  	</div>
 	  </div>
 	</div>
@@ -209,6 +234,19 @@
       		 newURL = newURL + "/leaderboard_points";
       		 window.location = newURL;
       	}
+    	
+    	function lookupMatch() {
+   		 var URL = document.URL;
+   		 var newURL = "";
+   		 var i = 0;
+   		 for(i = 0; i< URL.length - 1; i++)
+  			 {
+	 			 newURL = newURL + URL[i];
+  			 }
+   		 newURL = newURL + "match_record?player1=" + $(".selection#p1nameMatch").text() + "&player2=" + 
+   				 $(".selection#p2nameMatch").text();
+   		 window.location = newURL;
+   		}
     	
     	function goToAllMatches() {
      		 var URL = document.URL;

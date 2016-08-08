@@ -36,7 +36,7 @@
 	    	<h3 class="masthead-brand">Player ${newPlayer.firstName} ${newPlayer.lastName} added to the database!</h3>	    	
 	      		<nav>
 				  <ul class="nav masthead-nav">
-		  			<li id="HomeLink" ><a href="/myapp/">Home</a></li>
+		  			<li id="HomeLink" ><a href="/pingpong/">Home</a></li>
 				  </ul>
 	      		</nav>
       	  </div>

@@ -54,6 +54,10 @@
 			</div>
 		</div>
 	</div>
+	
+	<p class="lead">
+		<a href="/pingpong/" class="btn btn-lg btn-default">Home</a>
+	</p>
 
 <script>
 function changeRowColor() {

@@ -87,7 +87,7 @@
 	</table>
 	
 	<p class="lead">
-		<a href="/myapp/" class="btn btn-lg btn-default">Home</a>
+		<a href="/pingpong/" class="btn btn-lg btn-default">Home</a>
 	</p>
 
 

@@ -107,6 +107,20 @@ public class HomeController {
 			return "error";
 		}
 		
+		if(sc1 == sc2)
+		{
+			model.addAttribute("error", "Score is invalid, no ties allowed.");
+			CloseClient();
+			return "error";
+		} else if(sc1 > 11 || sc2 > 11)
+		{
+			if(Math.abs(sc1 - sc2) != 2){
+				model.addAttribute("error", "Score is invalid");
+				CloseClient();
+				return "error";
+			}
+		}
+		
 		//Split params into first and last names for player lookup
 		String[] firstLast = player1.split(" ");
 		String player1First = firstLast[0];

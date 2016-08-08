@@ -34,5 +34,9 @@
 <h1>${match.player2}</h1>
 <p>Overall Score: ${match.formattedP2Score }</p>
 <p>Overall Wins: ${match.p2Wins } </p>
+
+<p class="lead">
+		<a href="/pingpong/" class="btn btn-lg btn-default">Home</a>
+</p>
 </body>
 </html>
