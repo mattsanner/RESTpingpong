@@ -58,15 +58,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	/*@RequestMapping(value="/cover.css", produces = "text/css")
-	@ResponseBody
-	public String cover_css()
-	{			
-		File path = new File("cover.css");
-		
-		return "cover";
-	}*/
-	
 	@RequestMapping(value= "/record_match", params = {"player1", "player2", "score1", "score2"})
 	public String record_match(@RequestParam("player1") String player1, @RequestParam("player2") String player2, @RequestParam("score1") String score1, @RequestParam("score2") String score2, Model model)
 	{
@@ -292,15 +283,8 @@ public class HomeController {
 	{
 		InitializeClient();
 		PingPongMatch[] matches = client.getRecentMatches();
-		int i = 0;
-		int len = matches.length;
-		PingPongMatch[] flipped = new PingPongMatch[len];		
-		while(i<len)
-		{
-			flipped[len-1-i] = matches[i];
-			i++;
-		}
-		model.addAttribute("matches", flipped);
+		//model.addAttribute("matches", flipped);
+		model.addAttribute("matches", matches);
 		CloseClient();
 		return "recent_matches";
 	}

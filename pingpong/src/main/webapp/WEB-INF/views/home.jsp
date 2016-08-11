@@ -118,8 +118,10 @@
   					<c:forEach items="${players }" var="player">  					
   						<li role="presentation" id="${player.firstName} ${player.lastName}"><a href="#">${player.firstName} ${player.lastName}</a></li>						
   					</c:forEach>
-  				</div>
+  				</div>  				
   			</div>
+  			<input type="text" name="p1score" style="color:black;width:88px" placeholder="P1 Score">
+  			<br>
   			<div class="btn-group" id="p2">
   				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   				<span class="selection" id="p2name">Player 2</span>
@@ -131,9 +133,8 @@
   						<div class="dropdown-divider"></div>  						
   					</c:forEach>
   				</div>
-  			</div>
-  			<input type="text" name="p1score" style="color:black;width:75px" placeholder="p1score">
-  			<input type="text" name="p2score" style="color:black;width:75px" placeholder="p2score">
+  			</div> 
+  			<input type="text" name="p2score" style="color:black;width:88px" placeholder="P2 Score">
   			<br><br>
   			<button class="btn btn-primary" type="button" onclick="recordScore()">Record Score</button>  			
 	  </div>
