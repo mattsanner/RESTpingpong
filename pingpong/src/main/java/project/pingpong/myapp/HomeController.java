@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.datastax.driver.core.ResultSet;
-import com.datastax.driver.core.Row;
-
 /**
  * Handles requests for the application's pages (not just home)
  */
@@ -120,10 +117,10 @@ public class HomeController {
 		String player2First = firstLast[0];
 		String player2Last = firstLast[1];
 		
-		ResultSet rs1 = client.querySchema(player1First, player1Last);
-		ResultSet rs2 = client.querySchema(player2First, player2Last);
+		PingPongPlayer ppp1 = client.getPlayer(player1First, player1Last);
+		PingPongPlayer ppp2 = client.getPlayer(player2First, player2Last);
 		
-		if(!resultSetEmpty(rs1) && !resultSetEmpty(rs2))
+		if(!(ppp1 == null) && !(ppp2 ==null))
 		{				
 			if(sc1 < sc2)
 			{				
@@ -206,7 +203,7 @@ public class HomeController {
 	public String create_player(Model model, @RequestParam("firstName") String fN, @RequestParam("lastName") String lN)
 	{
 		InitializeClient();		
-		if(resultSetEmpty(client.querySchema(fN, lN)))
+		if(client.getPlayer(fN, lN) != null)
 		{
 			 boolean flag = client.createPlayer(fN,lN);
 			 if(flag)
@@ -289,22 +286,9 @@ public class HomeController {
 		return "recent_matches";
 	}
 	
-	public boolean resultSetEmpty(ResultSet r)
-	{
-		List<Row> rows = r.all();
-		if(rows.isEmpty())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
 	public void InitializeClient()
 	{
-		client.connect("127.0.0.1");		
+		client.connect();		
 	}
 	
 	public void CloseClient(){
