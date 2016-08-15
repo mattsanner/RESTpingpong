@@ -45,6 +45,12 @@ CREATE TABLE pingpong.matchlist (
 
 Web app used to create players, record matches, and display the records of players, different matchups, and recent matches.
 
+To start application go to your tomcat directory (for XPX: /home/pi/tomcat8) and run the catalina.sh script with 'run' parameter: "/home/pi/tomcat8/bin/catalina.sh run"
+
+The above script should startup tomcat that automatically deploys the war in the webapps directory. The terminal should fill with startup logging then mention the server start up in XX seconds which indicates it is good to go.
+
+Create a player by appending '/create_player?firstName=Matt&lastName=Sanner' to the given local address for the app, replacing the player's first and last name with Matt and Sanner respectively. This can also be done manually with MySQL with a simple INSERT statement.
+
 # Contributing
 
 Currently a closed group contributing to the repo. Feel free to clone and make your own changes.
